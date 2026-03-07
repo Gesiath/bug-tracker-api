@@ -1,6 +1,7 @@
 package com.gesiath.bugtrackerapi.dto.issue;
 
 import com.gesiath.bugtrackerapi.dto.user.UserResponse;
+import com.gesiath.bugtrackerapi.dto.user.UserSummaryResponse;
 import com.gesiath.bugtrackerapi.enumerator.IssueStatus;
 import com.gesiath.bugtrackerapi.enumerator.Priority;
 import lombok.*;
@@ -22,8 +23,8 @@ public class IssueResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private UUID projectId;
-    private String projectTitle;
-    private UserResponse reporter;
-    private UserResponse assignee;
+    private String projectName;
+    private UserSummaryResponse reporter;
+    private UserSummaryResponse assignee;
 
 }
