@@ -1,6 +1,6 @@
 package com.gesiath.bugtrackerapi.mapper;
 
-import com.gesiath.bugtrackerapi.dto.user.UserCreateRequest;
+import com.gesiath.bugtrackerapi.dto.auth.RegisterRequest;
 import com.gesiath.bugtrackerapi.dto.user.UserResponse;
 import com.gesiath.bugtrackerapi.dto.user.UserSummaryResponse;
 import com.gesiath.bugtrackerapi.dto.user.UserUpdateRequest;
@@ -47,7 +47,7 @@ public class UserMapper {
 
     }
 
-    public static User toEntity(UserCreateRequest dto){
+    public static User toEntity(RegisterRequest dto){
 
         if (dto == null) {
 

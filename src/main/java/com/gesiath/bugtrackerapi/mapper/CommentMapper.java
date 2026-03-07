@@ -3,6 +3,7 @@ package com.gesiath.bugtrackerapi.mapper;
 import com.gesiath.bugtrackerapi.dto.comment.CommentCreateRequest;
 import com.gesiath.bugtrackerapi.dto.comment.CommentResponse;
 import com.gesiath.bugtrackerapi.entity.Comment;
+
 public class CommentMapper {
 
     private CommentMapper(){
