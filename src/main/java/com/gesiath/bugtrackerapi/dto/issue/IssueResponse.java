@@ -1,6 +1,5 @@
 package com.gesiath.bugtrackerapi.dto.issue;
 
-import com.gesiath.bugtrackerapi.dto.user.UserResponse;
 import com.gesiath.bugtrackerapi.dto.user.UserSummaryResponse;
 import com.gesiath.bugtrackerapi.enumerator.IssueStatus;
 import com.gesiath.bugtrackerapi.enumerator.Priority;

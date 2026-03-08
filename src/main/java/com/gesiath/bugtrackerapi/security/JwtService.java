@@ -48,9 +48,9 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> resolver) {
+    private <T> T extractClaim(String token, Function<Claims, T> resolve) {
         final Claims claims = extractAllClaims(token);
-        return resolver.apply(claims);
+        return resolve.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
