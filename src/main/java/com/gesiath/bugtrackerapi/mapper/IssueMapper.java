@@ -2,6 +2,7 @@ package com.gesiath.bugtrackerapi.mapper;
 
 import com.gesiath.bugtrackerapi.dto.issue.IssueCreateRequest;
 import com.gesiath.bugtrackerapi.dto.issue.IssueResponse;
+import com.gesiath.bugtrackerapi.dto.issue.IssueSummaryResponse;
 import com.gesiath.bugtrackerapi.dto.issue.IssueUpdateRequest;
 import com.gesiath.bugtrackerapi.entity.Issue;
 
@@ -35,6 +36,23 @@ public class IssueMapper {
                                 ? UserMapper.toSummary(issue.getUserAssignee())
                                 : null
                 )
+                .build();
+
+    }
+
+    public static IssueSummaryResponse toSummary(Issue issue){
+
+        if (issue == null){
+
+            return null;
+
+        }
+
+        return IssueSummaryResponse.builder()
+                .id(issue.getId())
+                .title(issue.getTitle())
+                .issueStatus(issue.getIssueStatus())
+                .priority(issue.getPriority())
                 .build();
 
     }
