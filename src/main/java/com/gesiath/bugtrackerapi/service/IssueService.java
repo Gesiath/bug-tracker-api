@@ -12,8 +12,9 @@ public interface IssueService {
     IssueResponse getById(UUID id);
     IssueResponse create(IssueCreateRequest dto);
     IssueResponse update(UUID id, IssueUpdateRequest dto);
+    void delete(UUID id);
+    Page<IssueSummaryResponse> getByProject(UUID projectId, Pageable pageable);
     IssueResponse patchStatus(UUID id, IssueUpdateStatusRequest dto);
     IssueResponse assignDeveloper(UUID id, UUID developerId);
-    void delete(UUID id);
 
 }

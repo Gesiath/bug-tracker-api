@@ -26,7 +26,7 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<Page<ProjectResponse>> getAll(
-            @PageableDefault(size = 10, sort = "name")Pageable pageable){
+            @PageableDefault(size = 10, sort = "name") Pageable pageable){
 
         return ResponseEntity.ok(projectService.getAll(pageable));
 

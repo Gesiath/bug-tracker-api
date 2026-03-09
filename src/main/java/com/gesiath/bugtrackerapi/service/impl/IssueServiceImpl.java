@@ -77,6 +77,24 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
+    public void delete(UUID id) {
+
+        Issue issue = findIssue(id);
+
+        issueRepository.delete(issue);
+
+    }
+
+    @Override
+    public Page<IssueSummaryResponse> getByProject(UUID projectId, Pageable pageable){
+
+        Project project = findProject(projectId);
+        return issueRepository.findByProjectId(project.getId(), pageable)
+                .map(IssueMapper::toSummary);
+
+    }
+
+    @Override
     public IssueResponse patchStatus(UUID id, IssueUpdateStatusRequest dto) {
 
         Issue issue = findIssue(id);
@@ -107,15 +125,6 @@ public class IssueServiceImpl implements IssueService {
         issueRepository.save(issue);
 
         return IssueMapper.toResponse(issue);
-
-    }
-
-    @Override
-    public void delete(UUID id) {
-
-        Issue issue = findIssue(id);
-
-        issueRepository.delete(issue);
 
     }
 
