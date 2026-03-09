@@ -17,8 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.UUID;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
