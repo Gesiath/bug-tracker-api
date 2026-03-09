@@ -34,9 +34,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponse create(CommentCreateRequest dto) {
+    public CommentResponse create(UUID issueId, CommentCreateRequest dto) {
 
-        Issue issue = findIssue(dto.getIssueId());
+        Issue issue = findIssue(issueId);
 
         User user = (User) SecurityContextHolder
                 .getContext()

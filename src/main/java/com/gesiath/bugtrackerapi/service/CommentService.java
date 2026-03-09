@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface CommentService {
 
     Page<CommentResponse> getByIssue(UUID issueId, Pageable pageable);
-    CommentResponse create(CommentCreateRequest dto);
+    CommentResponse create(UUID issueId, CommentCreateRequest dto);
     void delete(UUID id);
 
 }
