@@ -33,29 +33,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserResponse> getDevelopers(Pageable pageable) {
-
-        return userRepository.findByRole(UserRole.DEVELOPER, pageable)
-                .map(UserMapper::toResponse);
-
-    }
-
-    @Override
     public UserResponse getById(UUID id) {
 
         User user = findUser(id);
-
-        return UserMapper.toResponse(user);
-
-    }
-
-    @Override
-    public UserResponse getCurrentUser() {
-
-        User user = (User) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
 
         return UserMapper.toResponse(user);
 
@@ -115,6 +95,26 @@ public class UserServiceImpl implements UserService {
         User user = findUser(id);
 
         userRepository.delete(user);
+
+    }
+
+    @Override
+    public Page<UserResponse> getDevelopers(Pageable pageable) {
+
+        return userRepository.findByRole(UserRole.DEVELOPER, pageable)
+                .map(UserMapper::toResponse);
+
+    }
+
+    @Override
+    public UserResponse getCurrentUser() {
+
+        User user = (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        return UserMapper.toResponse(user);
 
     }
 

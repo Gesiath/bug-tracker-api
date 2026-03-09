@@ -36,15 +36,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Page<IssueSummaryResponse> getProjectIssues(UUID projectId, Pageable pageable) {
-
-        Project project = findProject(projectId);
-        return issueRepository.findByProjectId(project.getId(), pageable)
-                .map(IssueMapper::toSummary);
-
-    }
-
-    @Override
     public ProjectResponse getById(UUID id) {
 
         Project project = findProject(id);
@@ -83,6 +74,15 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = findProject(id);
 
         projectRepository.delete(project);
+
+    }
+
+    @Override
+    public Page<IssueSummaryResponse> getProjectIssues(UUID projectId, Pageable pageable) {
+
+        Project project = findProject(projectId);
+        return issueRepository.findByProjectId(project.getId(), pageable)
+                .map(IssueMapper::toSummary);
 
     }
 

@@ -13,11 +13,11 @@ import java.util.UUID;
 public interface ProjectService {
 
     Page<ProjectResponse> getAll(Pageable pageable);
-    Page<IssueSummaryResponse> getProjectIssues(UUID projectId, Pageable pageable);
     ProjectResponse getById(UUID id);
     ProjectResponse create(ProjectCreateRequest dto);
     ProjectResponse update(UUID id, ProjectUpdateRequest dto);
     void delete(UUID id);
     ProjectStatsResponse getStats(UUID projectId);
+    Page<IssueSummaryResponse> getProjectIssues(UUID projectId, Pageable pageable);
 
 }
