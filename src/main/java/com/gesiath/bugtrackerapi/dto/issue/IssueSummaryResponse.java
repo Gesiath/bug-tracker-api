@@ -14,6 +14,7 @@ public class IssueSummaryResponse {
 
     private UUID id;
     private String title;
+    private String description;
     private IssueStatus issueStatus;
     private Priority priority;
 

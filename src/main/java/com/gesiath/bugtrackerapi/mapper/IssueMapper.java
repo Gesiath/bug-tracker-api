@@ -51,6 +51,7 @@ public class IssueMapper {
         return IssueSummaryResponse.builder()
                 .id(issue.getId())
                 .title(issue.getTitle())
+                .description(issue.getDescription())
                 .issueStatus(issue.getIssueStatus())
                 .priority(issue.getPriority())
                 .build();

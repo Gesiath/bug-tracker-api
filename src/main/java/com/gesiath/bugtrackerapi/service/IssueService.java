@@ -18,5 +18,6 @@ public interface IssueService {
     Page<IssueSummaryResponse> getByProject(UUID projectId, Pageable pageable);
     IssueResponse patchStatus(UUID id, IssueUpdateStatusRequest dto);
     IssueResponse assignDeveloper(UUID id, UUID developerId);
+    Page<IssueSummaryResponse> search(String query, Pageable pageable);
 
 }

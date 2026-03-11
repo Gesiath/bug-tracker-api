@@ -109,4 +109,13 @@ public class IssueController {
 
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<IssueSummaryResponse>> search(
+            @RequestParam String query,
+            @PageableDefault(size = 10, sort = "title") Pageable pageable){
+
+        return ResponseEntity.ok(issueService.search(query, pageable));
+
+    }
+
 }

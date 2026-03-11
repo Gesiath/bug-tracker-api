@@ -185,6 +185,14 @@ public class IssueServiceImpl implements IssueService {
 
     }
 
+    @Override
+    public Page<IssueSummaryResponse> search(String query, Pageable pageable){
+
+        return issueRepository.search(query, pageable)
+                .map(IssueMapper::toSummary);
+
+    }
+
     private Issue findIssue(UUID id){
 
         return issueRepository.findById(id)
