@@ -15,9 +15,14 @@ import com.gesiath.bugtrackerapi.service.IssueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import com.gesiath.bugtrackerapi.dto.issue.IssueFilterRequest;
+import jakarta.persistence.criteria.Predicate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,11 +34,53 @@ public class IssueServiceImpl implements IssueService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public Page<IssueSummaryResponse> getAll(Pageable pageable) {
+    public Page<IssueSummaryResponse> getAll(
+            IssueFilterRequest filters,
+            Pageable pageable) {
 
-        return issueRepository.findAll(pageable)
+        Specification<Issue> spec = (root, query, cb) -> {
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (filters.getIssueStatus() != null) {
+                predicates.add(
+                        cb.equal(root.get("issueStatus"), filters.getIssueStatus())
+                );
+            }
+
+            if (filters.getPriority() != null) {
+                predicates.add(
+                        cb.equal(root.get("priority"), filters.getPriority())
+                );
+            }
+
+            if (filters.getAssigneeId() != null) {
+                predicates.add(
+                        cb.equal(root.get("userAssignee").get("id"), filters.getAssigneeId())
+                );
+            }
+
+            if (filters.getProjectId() != null) {
+                predicates.add(
+                        cb.equal(root.get("project").get("id"), filters.getProjectId())
+                );
+            }
+
+            if (filters.getSearch() != null && !filters.getSearch().isBlank()) {
+                predicates.add(
+                        cb.like(
+                                cb.lower(root.get("title")),
+                                "%" + filters.getSearch().toLowerCase() + "%"
+                        )
+                );
+            }
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+
+        return issueRepository
+                .findAll(spec, pageable)
                 .map(IssueMapper::toSummary);
-
     }
 
     @Override

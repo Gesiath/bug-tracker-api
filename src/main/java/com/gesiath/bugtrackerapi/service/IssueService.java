@@ -8,7 +8,9 @@ import java.util.UUID;
 
 public interface IssueService {
 
-    Page<IssueSummaryResponse> getAll(Pageable pageable);
+    Page<IssueSummaryResponse> getAll(
+            IssueFilterRequest filters,
+            Pageable pageable);
     IssueResponse getById(UUID id);
     IssueResponse create(IssueCreateRequest dto);
     IssueResponse update(UUID id, IssueUpdateRequest dto);

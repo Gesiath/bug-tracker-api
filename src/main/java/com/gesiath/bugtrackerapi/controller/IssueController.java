@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.gesiath.bugtrackerapi.dto.issue.IssueFilterRequest;
 
 import java.net.URI;
 import java.util.UUID;
@@ -25,9 +26,10 @@ public class IssueController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER')")
     @GetMapping
     public ResponseEntity<Page<IssueSummaryResponse>> getAll(
+            IssueFilterRequest filters,
             @PageableDefault(size = 10, sort = "title") Pageable pageable){
 
-        return ResponseEntity.ok(issueService.getAll(pageable));
+        return ResponseEntity.ok(issueService.getAll(filters, pageable));
 
     }
 
