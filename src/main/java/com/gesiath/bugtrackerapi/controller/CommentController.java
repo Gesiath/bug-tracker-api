@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/issues/{issueId}/comments")
+@RequestMapping("/api/v1/issues/{issueId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
