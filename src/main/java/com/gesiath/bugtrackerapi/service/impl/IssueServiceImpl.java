@@ -81,8 +81,8 @@ public class IssueServiceImpl implements IssueService {
         };
 
         return issueRepository
-                .findAll(spec, pageable)
-                .map(IssueMapper::toSummary);
+                .findAllProjected(spec, pageable)
+                .map(IssueMapper::toProjected);
     }
 
     @Override

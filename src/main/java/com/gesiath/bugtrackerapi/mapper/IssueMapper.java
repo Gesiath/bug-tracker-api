@@ -5,6 +5,7 @@ import com.gesiath.bugtrackerapi.dto.issue.IssueResponse;
 import com.gesiath.bugtrackerapi.dto.issue.IssueSummaryResponse;
 import com.gesiath.bugtrackerapi.dto.issue.IssueUpdateRequest;
 import com.gesiath.bugtrackerapi.entity.Issue;
+import com.gesiath.bugtrackerapi.repository.projection.IssueSummaryProjection;
 
 public class IssueMapper {
 
@@ -41,6 +42,24 @@ public class IssueMapper {
     }
 
     public static IssueSummaryResponse toSummary(Issue issue){
+
+        if (issue == null){
+
+            return null;
+
+        }
+
+        return IssueSummaryResponse.builder()
+                .id(issue.getId())
+                .title(issue.getTitle())
+                .description(issue.getDescription())
+                .issueStatus(issue.getIssueStatus())
+                .priority(issue.getPriority())
+                .build();
+
+    }
+
+    public static IssueSummaryResponse toProjected(IssueSummaryProjection issue){
 
         if (issue == null){
 
