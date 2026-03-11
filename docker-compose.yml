@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   postgres:
@@ -17,6 +15,8 @@ services:
 
   app:
     build: .
+    env_file:
+      - .env
     container_name: bugtracker_api
     restart: always
     depends_on:
@@ -25,7 +25,6 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      JWT_SECRET: ${JWT_SECRET}
 
 volumes:
   postgres_data:
