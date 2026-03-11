@@ -1,6 +1,7 @@
 package com.gesiath.bugtrackerapi.config;
 
 import com.gesiath.bugtrackerapi.security.JwtAuthenticationFilter;
+import com.gesiath.bugtrackerapi.security.RateLimiterFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final RateLimiterFilter rateLimiterFilter;
     private final CustomUserDetailsService userDetailsService;
 
     @Bean
@@ -35,6 +37,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider())
+                .addFilterBefore(rateLimiterFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
