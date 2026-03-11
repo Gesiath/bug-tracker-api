@@ -10,7 +10,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -42,7 +44,17 @@ public class IssueController {
     public ResponseEntity<IssueResponse> create(
             @Valid  @RequestBody IssueCreateRequest request){
 
-        return ResponseEntity.status(201).body(issueService.create(request));
+        IssueResponse response = issueService.create(request);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.getId())
+                .toUri();
+
+        return ResponseEntity
+                .created(location)
+                .body(response);
 
     }
 

@@ -11,7 +11,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -37,7 +39,17 @@ public class CommentController {
             @PathVariable UUID issueId,
             @Valid @RequestBody CommentCreateRequest request){
 
-        return ResponseEntity.status(201).body(commentService.create(issueId, request));
+        CommentResponse response = commentService.create(issueId, request);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(response.getId())
+                .toUri();
+
+        return ResponseEntity
+                .created(location)
+                .body(response);
 
     }
 
