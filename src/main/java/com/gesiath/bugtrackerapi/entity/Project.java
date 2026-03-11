@@ -30,6 +30,8 @@ public class Project {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

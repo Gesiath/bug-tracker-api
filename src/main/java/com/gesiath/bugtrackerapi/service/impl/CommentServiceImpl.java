@@ -59,7 +59,9 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = findComment(id);
 
-        commentRepository.delete(comment);
+        comment.setDeleted(true);
+
+        commentRepository.save(comment);
 
     }
 

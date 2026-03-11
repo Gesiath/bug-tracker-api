@@ -1,5 +1,6 @@
 package com.gesiath.bugtrackerapi.service;
 
+import com.gesiath.bugtrackerapi.dto.user.UserFilterRequest;
 import com.gesiath.bugtrackerapi.dto.user.UserResponse;
 import com.gesiath.bugtrackerapi.dto.user.UserUpdateRequest;
 import com.gesiath.bugtrackerapi.enumerator.UserRole;
@@ -10,7 +11,9 @@ import java.util.UUID;
 
 public interface UserService {
 
-    Page<UserResponse> getAll(Pageable pageable);
+    Page<UserResponse> getAll(
+            UserFilterRequest filters,
+            Pageable pageable);
     UserResponse getById(UUID id);
     UserResponse update(UUID id, UserUpdateRequest dto);
     UserResponse patchRole(UUID id, UserRole role);

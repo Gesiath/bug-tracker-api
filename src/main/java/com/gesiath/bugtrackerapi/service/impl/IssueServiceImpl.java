@@ -12,14 +12,14 @@ import com.gesiath.bugtrackerapi.repository.IssueRepository;
 import com.gesiath.bugtrackerapi.repository.ProjectRepository;
 import com.gesiath.bugtrackerapi.repository.UserRepository;
 import com.gesiath.bugtrackerapi.service.IssueService;
+import com.gesiath.bugtrackerapi.dto.issue.IssueFilterRequest;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import com.gesiath.bugtrackerapi.dto.issue.IssueFilterRequest;
-import jakarta.persistence.criteria.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +74,8 @@ public class IssueServiceImpl implements IssueService {
                         )
                 );
             }
+
+            predicates.add(cb.isFalse(root.get("deleted")));
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
@@ -138,7 +140,9 @@ public class IssueServiceImpl implements IssueService {
 
         Issue issue = findIssue(id);
 
-        issueRepository.delete(issue);
+        issue.setDeleted(true);
+
+        issueRepository.save(issue);
 
     }
 

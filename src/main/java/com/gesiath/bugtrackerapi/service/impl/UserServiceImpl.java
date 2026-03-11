@@ -1,5 +1,6 @@
 package com.gesiath.bugtrackerapi.service.impl;
 
+import com.gesiath.bugtrackerapi.dto.user.UserFilterRequest;
 import com.gesiath.bugtrackerapi.dto.user.UserResponse;
 import com.gesiath.bugtrackerapi.dto.user.UserUpdateRequest;
 import com.gesiath.bugtrackerapi.entity.User;
@@ -8,13 +9,17 @@ import com.gesiath.bugtrackerapi.exception.CustomDataNotFoundException;
 import com.gesiath.bugtrackerapi.mapper.UserMapper;
 import com.gesiath.bugtrackerapi.repository.UserRepository;
 import com.gesiath.bugtrackerapi.service.UserService;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -25,9 +30,29 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Page<UserResponse> getAll(Pageable pageable) {
+    public Page<UserResponse> getAll(
+            UserFilterRequest filters,
+            Pageable pageable) {
 
-        return userRepository.findAll(pageable)
+        Specification<User> spec = (root, query, cb) ->{
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (filters.getUserRole() != null){
+
+                predicates.add(
+                        cb.equal(root.get("role"), filters.getUserRole())
+                );
+
+            }
+
+            predicates.add(cb.isFalse(root.get("deleted")));
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+
+        };
+
+        return userRepository.findAll(spec, pageable)
                 .map(UserMapper::toResponse);
 
     }
@@ -88,7 +113,9 @@ public class UserServiceImpl implements UserService {
 
         User user = findUser(id);
 
-        userRepository.delete(user);
+        user.setDeleted(true);
+
+        userRepository.save(user);
 
     }
 

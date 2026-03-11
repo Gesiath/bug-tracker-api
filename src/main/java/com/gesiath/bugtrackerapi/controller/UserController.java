@@ -1,6 +1,7 @@
 package com.gesiath.bugtrackerapi.controller;
 
 
+import com.gesiath.bugtrackerapi.dto.user.UserFilterRequest;
 import com.gesiath.bugtrackerapi.dto.user.UserResponse;
 import com.gesiath.bugtrackerapi.dto.user.UserUpdateRequest;
 import com.gesiath.bugtrackerapi.enumerator.UserRole;
@@ -26,9 +27,10 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<Page<UserResponse>> getAll(
+            UserFilterRequest filters,
             @PageableDefault(size = 10, sort = "name") Pageable pageable){
 
-        return ResponseEntity.ok(userService.getAll(pageable));
+        return ResponseEntity.ok(userService.getAll(filters, pageable));
 
     }
 

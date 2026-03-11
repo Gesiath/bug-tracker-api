@@ -11,10 +11,6 @@ import lombok.*;
 @Builder
 public class RegisterRequest {
 
-    @NotBlank(message = "Username is required")
-    @Size(max = 50)
-    private String username;
-
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name cannot exceed 100 characters")
     private String name;

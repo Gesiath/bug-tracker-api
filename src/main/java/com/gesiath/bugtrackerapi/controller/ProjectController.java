@@ -1,10 +1,7 @@
 package com.gesiath.bugtrackerapi.controller;
 
 import com.gesiath.bugtrackerapi.dto.issue.IssueSummaryResponse;
-import com.gesiath.bugtrackerapi.dto.project.ProjectCreateRequest;
-import com.gesiath.bugtrackerapi.dto.project.ProjectResponse;
-import com.gesiath.bugtrackerapi.dto.project.ProjectStatsResponse;
-import com.gesiath.bugtrackerapi.dto.project.ProjectUpdateRequest;
+import com.gesiath.bugtrackerapi.dto.project.*;
 import com.gesiath.bugtrackerapi.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +25,10 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<Page<ProjectResponse>> getAll(
+            ProjectFilterRequest filters,
             @PageableDefault(size = 10, sort = "name") Pageable pageable){
 
-        return ResponseEntity.ok(projectService.getAll(pageable));
+        return ResponseEntity.ok(projectService.getAll(filters, pageable));
 
     }
 

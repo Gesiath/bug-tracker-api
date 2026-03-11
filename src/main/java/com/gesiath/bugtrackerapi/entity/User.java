@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     @JsonIgnore
     @OneToMany(mappedBy = "userReporter")
     private List<Issue> issuesReporter;

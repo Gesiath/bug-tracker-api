@@ -1,10 +1,7 @@
 package com.gesiath.bugtrackerapi.service.impl;
 
 import com.gesiath.bugtrackerapi.dto.issue.IssueSummaryResponse;
-import com.gesiath.bugtrackerapi.dto.project.ProjectCreateRequest;
-import com.gesiath.bugtrackerapi.dto.project.ProjectResponse;
-import com.gesiath.bugtrackerapi.dto.project.ProjectStatsResponse;
-import com.gesiath.bugtrackerapi.dto.project.ProjectUpdateRequest;
+import com.gesiath.bugtrackerapi.dto.project.*;
 import com.gesiath.bugtrackerapi.entity.Project;
 import com.gesiath.bugtrackerapi.entity.User;
 import com.gesiath.bugtrackerapi.enumerator.IssueStatus;
@@ -14,12 +11,17 @@ import com.gesiath.bugtrackerapi.mapper.ProjectMapper;
 import com.gesiath.bugtrackerapi.repository.IssueRepository;
 import com.gesiath.bugtrackerapi.repository.ProjectRepository;
 import com.gesiath.bugtrackerapi.service.ProjectService;
+import com.gesiath.bugtrackerapi.dto.project.ProjectFilterRequest;
+import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,9 +32,38 @@ public class ProjectServiceImpl implements ProjectService {
     private final IssueRepository issueRepository;
 
     @Override
-    public Page<ProjectResponse> getAll(Pageable pageable) {
+    public Page<ProjectResponse> getAll(
+            ProjectFilterRequest filters,
+            Pageable pageable) {
 
-        return projectRepository.findAll(pageable)
+        Specification<Project> spec = (root, query, cb) ->{
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (filters.getUserId() != null){
+
+                predicates.add(
+                        cb.equal(root.get("createdByUser"), filters.getUserId())
+                );
+
+            }
+
+            if (filters.getSearch() != null && !filters.getSearch().isBlank()) {
+                predicates.add(
+                        cb.like(
+                                cb.lower(root.get("title")),
+                                "%" + filters.getSearch().toLowerCase() + "%"
+                        )
+                );
+            }
+
+            predicates.add(cb.isFalse(root.get("deleted")));
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+
+        };
+
+        return projectRepository.findAll(spec, pageable)
                 .map(ProjectMapper::toResponse);
 
     }
@@ -79,7 +110,9 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = findProject(id);
 
-        projectRepository.delete(project);
+        project.setDeleted(true);
+
+        projectRepository.save(project);
 
     }
 

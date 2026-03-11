@@ -23,6 +23,7 @@ public class CommentMapper {
                 .id(comment.getId())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
+                .deleted(comment.isDeleted())
                 .issueId(comment.getIssue().getId())
                 .issueTitle(comment.getIssue().getTitle())
                 .userName(comment.getAuthor().getName())
