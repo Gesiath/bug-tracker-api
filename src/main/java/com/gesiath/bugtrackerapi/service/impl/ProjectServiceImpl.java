@@ -6,6 +6,7 @@ import com.gesiath.bugtrackerapi.dto.project.ProjectResponse;
 import com.gesiath.bugtrackerapi.dto.project.ProjectStatsResponse;
 import com.gesiath.bugtrackerapi.dto.project.ProjectUpdateRequest;
 import com.gesiath.bugtrackerapi.entity.Project;
+import com.gesiath.bugtrackerapi.entity.User;
 import com.gesiath.bugtrackerapi.enumerator.IssueStatus;
 import com.gesiath.bugtrackerapi.exception.CustomDataNotFoundException;
 import com.gesiath.bugtrackerapi.mapper.IssueMapper;
@@ -16,6 +17,7 @@ import com.gesiath.bugtrackerapi.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -48,6 +50,10 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectResponse create(ProjectCreateRequest dto) {
 
         Project project = ProjectMapper.toEntity(dto);
+
+        User creator = getCurrentUser();
+
+        project.setCreatedByUser(creator);
 
         projectRepository.save(project);
 
@@ -111,6 +117,15 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectRepository.findById(id)
                 .orElseThrow(() -> new CustomDataNotFoundException("Project not found"));
+
+    }
+
+    private User getCurrentUser(){
+
+        return (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
 
     }
 

@@ -23,7 +23,6 @@ public class UserMapper {
         return UserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .username(user.getUsername())
                 .email(user.getEmail())
                 .userRole(user.getRole())
                 .createdAt(user.getCreatedAt())
@@ -42,7 +41,6 @@ public class UserMapper {
         return UserSummaryResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .username(user.getUsername())
                 .build();
 
     }
@@ -57,7 +55,6 @@ public class UserMapper {
 
         return User.builder()
                 .name(dto.getName())
-                .username(dto.getUsername())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .build();
@@ -69,12 +66,6 @@ public class UserMapper {
         if (dto.getName() != null){
 
             user.setName(dto.getName());
-
-        }
-
-        if (dto.getUsername() != null){
-
-            user.setUsername(dto.getUsername());
 
         }
 

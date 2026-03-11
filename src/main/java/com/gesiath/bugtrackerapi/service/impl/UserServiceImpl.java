@@ -52,12 +52,6 @@ public class UserServiceImpl implements UserService {
 
         }
 
-        if (dto.getUsername() != null){
-
-            user.setUsername(dto.getUsername());
-
-        }
-
         if (dto.getEmail() != null){
 
             user.setEmail(dto.getEmail());

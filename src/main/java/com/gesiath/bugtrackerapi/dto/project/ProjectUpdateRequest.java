@@ -10,7 +10,6 @@ import lombok.*;
 @Builder
 public class ProjectUpdateRequest {
 
-    @NotBlank(message = "Name of the project is required")
     @Size(max = 100, message = "Name cannot exceed 100 characters")
     private String name;
 

@@ -23,7 +23,7 @@ public class IssueController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('DEVELOPER')")
     @GetMapping
     public ResponseEntity<Page<IssueSummaryResponse>> getAll(
-            @PageableDefault(size = 10, sort = "name") Pageable pageable){
+            @PageableDefault(size = 10, sort = "title") Pageable pageable){
 
         return ResponseEntity.ok(issueService.getAll(pageable));
 
@@ -69,7 +69,7 @@ public class IssueController {
     @GetMapping("/project/{projectId}")
     public ResponseEntity<Page<IssueSummaryResponse>> getByProject(
             @PathVariable UUID projectId,
-            @PageableDefault(size = 10, sort = "name") Pageable pageable){
+            @PageableDefault(size = 10, sort = "title") Pageable pageable){
 
         return ResponseEntity.ok(issueService.getByProject(projectId, pageable));
 

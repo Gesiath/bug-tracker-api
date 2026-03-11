@@ -4,6 +4,7 @@ import com.gesiath.bugtrackerapi.dto.issue.*;
 import com.gesiath.bugtrackerapi.entity.Issue;
 import com.gesiath.bugtrackerapi.entity.Project;
 import com.gesiath.bugtrackerapi.entity.User;
+import com.gesiath.bugtrackerapi.enumerator.IssueStatus;
 import com.gesiath.bugtrackerapi.enumerator.UserRole;
 import com.gesiath.bugtrackerapi.exception.CustomDataNotFoundException;
 import com.gesiath.bugtrackerapi.mapper.IssueMapper;
@@ -56,6 +57,15 @@ public class IssueServiceImpl implements IssueService {
         issue.setProject(project);
 
         issue.setUserReporter(reporter);
+
+        issue.setIssueStatus(IssueStatus.OPEN);
+
+        if (dto.getAssigneeId() != null){
+
+            User assignee = findUser(dto.getAssigneeId());
+            issue.setUserAssignee(assignee);
+
+        }
 
         issueRepository.save(issue);
 

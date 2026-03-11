@@ -27,7 +27,6 @@ public class IssueCreateRequest {
     @NotNull(message = "ID of the project is required")
     private UUID projectId;
 
-    @NotNull(message = "The ID of the user to whom the issue will be assigned is required")
     private UUID assigneeId;
 
 }

@@ -12,6 +12,5 @@ public class UserSummaryResponse {
 
     private UUID id;
     private String name;
-    private String username;
 
 }
