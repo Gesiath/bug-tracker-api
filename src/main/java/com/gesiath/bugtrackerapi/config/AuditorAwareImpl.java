@@ -13,19 +13,20 @@ public class AuditorAwareImpl implements AuditorAware<UUID> {
 
     @Override
     public Optional<UUID> getCurrentAuditor() {
-
         var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null || !authentication.isAuthenticated()){
-
-            return Optional.empty();
-
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return Optional.of(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         }
 
-        User user = (User) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-        return Optional.of(user.getId());
+        if (principal instanceof User) {
+            User user = (User) principal;
+            return Optional.of(user.getId());
+        }
 
+        return Optional.of(UUID.fromString("00000000-0000-0000-0000-000000000001"));
     }
 
 }

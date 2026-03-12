@@ -3,13 +3,18 @@ package com.gesiath.bugtrackerapi.service;
 import com.gesiath.bugtrackerapi.dto.project.ProjectCreateRequest;
 import com.gesiath.bugtrackerapi.dto.project.ProjectResponse;
 import com.gesiath.bugtrackerapi.entity.Project;
+import com.gesiath.bugtrackerapi.entity.User;
+import com.gesiath.bugtrackerapi.enumerator.UserRole;
 import com.gesiath.bugtrackerapi.repository.ProjectRepository;
 import com.gesiath.bugtrackerapi.service.impl.ProjectServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.UUID;
 
@@ -25,6 +30,19 @@ public class ProjectServiceImplTest {
 
     @InjectMocks
     private ProjectServiceImpl projectService;
+
+    @BeforeEach
+    void setup() {
+        User currentUser = User.builder()
+                .id(UUID.randomUUID())
+                .name("Current User")
+                .role(UserRole.ADMIN)
+                .build();
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(currentUser, null)
+        );
+    }
 
     @Test
     void shouldCreateProject(){

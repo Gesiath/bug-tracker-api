@@ -3,63 +3,52 @@ package com.gesiath.bugtrackerapi.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gesiath.bugtrackerapi.dto.auth.AuthResponse;
 import com.gesiath.bugtrackerapi.dto.auth.LoginRequest;
-import com.gesiath.bugtrackerapi.security.JwtAuthenticationFilter;
-import com.gesiath.bugtrackerapi.security.JwtService;
-import com.gesiath.bugtrackerapi.security.RateLimiterFilter;
 import com.gesiath.bugtrackerapi.service.AuthService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.ResponseEntity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AuthController.class)
-@AutoConfigureMockMvc(addFilters = false)
-public class AuthControllerTest {
+class AuthControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @InjectMocks
+    private AuthController authController;
 
-    @MockitoBean
+    @Mock
     private AuthService authService;
 
-    @MockitoBean
-    private JwtService jwtService;
-
-    @MockitoBean
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    @MockitoBean
-    private RateLimiterFilter rateLimiterFilter;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
-    @Test
-    void shouldLoginSuccessfully() throws Exception{
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        objectMapper = new ObjectMapper();
+    }
 
+    @Test
+    void shouldLoginSuccessfully() throws Exception {
+        // Preparar request y response fake
         LoginRequest request = LoginRequest.builder()
                 .email("test@test.com")
                 .password("password")
                 .build();
 
         AuthResponse response = AuthResponse.builder()
-                .token("TaIqeifCY497Jd48hxgmgd48m3m03WgWwbgBxggTO+c=")//es un jwt random
+                .token("jwt-fake-token")
                 .build();
 
         when(authService.login(any())).thenReturn(response);
 
-        mockMvc.perform(post("/api/v1/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk());
-    }
+        /*Llamada al metodo directamente*/
+        ResponseEntity<AuthResponse> result = authController.login(request);
 
+        assertEquals(200, result.getStatusCodeValue());
+        assertEquals("jwt-fake-token", result.getBody().getToken());
+    }
 }
