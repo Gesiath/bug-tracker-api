@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Issue {
+public class Issue extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,12 +37,6 @@ public class Issue {
     @Column(nullable = false)
     private Priority priority;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
     @Column(nullable = false)
     private boolean deleted = false;
 
@@ -61,16 +55,5 @@ public class Issue {
     @JsonIgnore
     @OneToMany(mappedBy = "issue")
     private List<Comment> comments;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 
 }

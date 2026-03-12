@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error("Internal Server Error")
-                .message(ex.getMessage()) //Si esto da error camibar por "Somenthing went wrong" directamente
+                .message(ex.getMessage())
                 .build();
 
         return ResponseEntity.internalServerError().body(error);

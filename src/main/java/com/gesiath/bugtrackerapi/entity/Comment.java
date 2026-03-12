@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Comment {
+public class Comment extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,9 +21,6 @@ public class Comment {
 
     @Column(nullable = false, length = 500)
     private String content;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private boolean deleted = false;
@@ -35,10 +32,5 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
 
 }
